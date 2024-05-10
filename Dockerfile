@@ -6,6 +6,7 @@ RUN apt-get update \
         catch2 \
         cmake \
         g++ \
+        git \
         libcli11-dev \
         libhdf5-openmpi-dev \
         librange-v3-dev \
