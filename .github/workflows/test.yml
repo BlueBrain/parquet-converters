@@ -47,7 +47,7 @@ jobs:
         cmake -B highfive_build -S highfive_source -DCMAKE_INSTALL_PREFIX=highfive_install -DHIGHFIVE_UNIT_TESTS=OFF -DHIGHFIVE_EXAMPLES=OFF -DHIGHFIVE_BUILD_DOCS=OFF
         cmake --build highfive_build
         cmake --install highfive_build
-        echo "CMAKE_PREFIX_PATH=$PWD/highfive_build" >> "$GITHUB_ENV"
+        echo "CMAKE_PREFIX_PATH=$PWD/highfive_install" >> "$GITHUB_ENV"
 
     - name: Configure
       run: |
