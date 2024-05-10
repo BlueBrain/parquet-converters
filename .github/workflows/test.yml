@@ -17,7 +17,7 @@ jobs:
             submodules: false
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: ${{ matrix.submodules }}
 
@@ -35,7 +35,7 @@ jobs:
         sudo apt-get install -y libarrow-dev libparquet-dev
 
     - name: Clone HighFive
-      uses: actions/checkout@3
+      uses: actions/checkout@v4
       if: ${{ ! matrix.submodules }}
       with:
         repository: BlueBrain/HighFive
