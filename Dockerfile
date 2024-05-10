@@ -20,6 +20,13 @@ RUN wget https://apache.jfrog.io/artifactory/arrow/$(lsb_release --id --short | 
         libarrow-dev \
         libparquet-dev
 
+RUN mkdir /highfive \
+ && git clone https://github.com/BlueBrain/HighFive /highfive/src \
+ && cmake -B /highfive/build -S /highfive/src -DCMAKE_INSTALL_PREFIX=/highfive/install -DHIGHFIVE_UNIT_TESTS=OFF -DHIGHFIVE_EXAMPLES=OFF -DHIGHFIVE_BUILD_DOCS=OFF \
+ && cmake --build /highfive/build \
+ && cmake --install /highfive/build
+
+ENV CMAKE_PREFIX_PATH=/highfive/install
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 

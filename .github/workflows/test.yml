@@ -6,20 +6,13 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build_w_submodules:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        packages: [""]
-        submodules: [true]
-        include:
-          - packages: "catch2 libcli11-dev"
-            submodules: false
 
     steps:
     - uses: actions/checkout@v4
       with:
-        submodules: ${{ matrix.submodules }}
+        submodules: true
 
     - name: Set up Apache Arrow repositories
       run: |
@@ -31,29 +24,22 @@ jobs:
 
     - name: Install build dependencies
       run: |
-        sudo apt-get install -y cmake g++ libhdf5-openmpi-dev librange-v3-dev ninja-build nlohmann-json3-dev ${{ matrix.packages }}
+        sudo apt-get install -y cmake g++ libhdf5-openmpi-dev librange-v3-dev ninja-build nlohmann-json3-dev
         sudo apt-get install -y libarrow-dev libparquet-dev
-
-    - name: Clone HighFive
-      uses: actions/checkout@v4
-      if: ${{ ! matrix.submodules }}
-      with:
-        repository: BlueBrain/HighFive
-        path: highfive_source
-
-    - name: Install HighFive
-      if: ${{ ! matrix.submodules }}
-      run: |
-        cmake -B highfive_build -S highfive_source -DCMAKE_INSTALL_PREFIX=highfive_install -DHIGHFIVE_UNIT_TESTS=OFF -DHIGHFIVE_EXAMPLES=OFF -DHIGHFIVE_BUILD_DOCS=OFF
-        cmake --build highfive_build
-        cmake --install highfive_build
-        echo "CMAKE_PREFIX_PATH=$PWD/highfive_install" >> "$GITHUB_ENV"
 
     - name: Configure
       run: |
-        ls -l /usr/include/catch2 || true
-        echo $CMAKE_PREFIX_PATH
         cmake -B build -S . -GNinja \
           -DCMAKE_CXX_COMPILER=$(which mpicxx)
         cmake --build build
         cd build && ctest -VV
+
+  build_docker_no_submodules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build
+        uses: docker/build-push-action@v5
