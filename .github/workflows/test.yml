@@ -31,10 +31,23 @@ jobs:
 
     - name: Install build dependencies
       run: |
-        sudo apt-get install -y cmake g++ libhdf5-openmpi-dev librange-v3-dev ninja-build ${{ matrix.packages }}
-        ls -l /var/cache/apt/archives
+        sudo apt-get install -y cmake g++ libhdf5-openmpi-dev librange-v3-dev ninja-build nlohmann-json3-dev ${{ matrix.packages }}
         sudo apt-get install -y libarrow-dev libparquet-dev
-        ls -l /var/cache/apt/archives
+
+    - name: Clone HighFive
+      uses: actions/checkout@3
+      if: ${{ ! matrix.submodules }}
+      with:
+        repository: BlueBrain/HighFive
+        path: HighFive
+
+    - name: Install HighFive
+      if: ${{ ! matrix.submodules }}
+      run: |
+        cmake -B highfive_build -S highfive -DCMAKE_INSTALL_PREFIX=highfive_install
+        cmake --build highfive_build
+        cmake --install highfive_build
+        echo "CMAKE_PREFIX_PATH=$PWD/highfive_build" >> "$GITHUB_ENV"
 
     - name: Configure
       run: |
