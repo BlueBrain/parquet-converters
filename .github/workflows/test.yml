@@ -44,6 +44,7 @@ jobs:
     - name: Install HighFive
       if: ${{ ! matrix.submodules }}
       run: |
+        echo $CMAKE_PREFIX_PATH
         cmake -B highfive_build -S highfive_source -DCMAKE_INSTALL_PREFIX=highfive_install -DHIGHFIVE_UNIT_TESTS=OFF -DHIGHFIVE_EXAMPLES=OFF -DHIGHFIVE_BUILD_DOCS=OFF
         cmake --build highfive_build
         cmake --install highfive_build
