@@ -53,3 +53,4 @@ jobs:
       run: |
         cmake -B build -S . -GNinja \
           -DCMAKE_CXX_COMPILER=$(which mpicxx)
+        cd build && ctest -VV
