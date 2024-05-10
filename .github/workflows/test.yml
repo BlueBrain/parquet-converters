@@ -29,7 +29,6 @@ jobs:
 
     - name: Configure
       run: |
-        export PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe
         cmake -B build -S . -GNinja \
           -DCMAKE_CXX_COMPILER=$(which mpicxx)
         cmake --build build

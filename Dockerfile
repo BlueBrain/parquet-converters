@@ -30,7 +30,6 @@ RUN mkdir /highfive \
 ENV CMAKE_PREFIX_PATH=/highfive/install
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-ENV PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe
 
 COPY . /src
 
