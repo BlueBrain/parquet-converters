@@ -51,7 +51,7 @@ jobs:
 
     - name: Configure
       run: |
-        ls -l /usr/include/catch2
+        ls -l /usr/include/catch2 || true
         echo $CMAKE_PREFIX_PATH
         cmake -B build -S . -GNinja \
           -DCMAKE_CXX_COMPILER=$(which mpicxx)
