@@ -7,7 +7,7 @@ find_program(
   DOC "Executable for running MPI programs.")
 
 add_test(NAME parquet2hdf5_mpi
-         COMMAND ${mpi_launcher} -n 4 $<TARGET_FILE:parquet2hdf5>
+         COMMAND ${mpi_launcher} -n 2 $<TARGET_FILE:parquet2hdf5>
                  ${CMAKE_CURRENT_SOURCE_DIR}/parquets edges_n4.h5 All)
 
 add_test(NAME touches_conversion_v1
