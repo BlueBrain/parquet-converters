@@ -1,0 +1,42 @@
+name: Run tests
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        packages: [""]
+        submodules: [true]
+        include:
+          - packages: "catch2 libcli11-dev"
+            submodules: false
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: ${{ matrix.submodules }}
+
+    - name: Set up Apache Arrow repositories
+      run: |
+        apt-get update
+        apt-get install -y ca-certificates lsb-release wget
+        wget https://apache.jfrog.io/artifactory/arrow/$(lsb_release --id --short | tr 'A-Z' 'a-z')/apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
+        apt-get install -y ./apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
+        apt-get update
+
+    - name: Install build dependencies
+      run: |
+        apt-get install -y cmake g++ libhdf5-openmpi-dev librange-v3-dev ninja-build ${{ matrix.packages }}
+        ls -l /var/cache/apt/archives
+        apt-get install -y libarrow-dev libparquet-dev
+        ls -l /var/cache/apt/archives
+
+    - name: Configure
+      run: |
+        cmake -B build -S . -GNinja \
+          -DCMAKE_CXX_COMPILER=$(which mpicxx)
