@@ -39,12 +39,12 @@ jobs:
       if: ${{ ! matrix.submodules }}
       with:
         repository: BlueBrain/HighFive
-        path: HighFive
+        path: highfive_source
 
     - name: Install HighFive
       if: ${{ ! matrix.submodules }}
       run: |
-        cmake -B highfive_build -S highfive -DCMAKE_INSTALL_PREFIX=highfive_install
+        cmake -B highfive_build -S highfive_source -DCMAKE_INSTALL_PREFIX=highfive_install
         cmake --build highfive_build
         cmake --install highfive_build
         echo "CMAKE_PREFIX_PATH=$PWD/highfive_build" >> "$GITHUB_ENV"
