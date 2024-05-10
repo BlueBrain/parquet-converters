@@ -51,6 +51,7 @@ jobs:
 
     - name: Configure
       run: |
+        echo $CMAKE_PREFIX_PATH
         cmake -B build -S . -GNinja \
           -DCMAKE_CXX_COMPILER=$(which mpicxx)
         cmake --build build
