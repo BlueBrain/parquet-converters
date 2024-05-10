@@ -32,7 +32,7 @@ jobs:
         cmake -B build -S . -GNinja \
           -DCMAKE_CXX_COMPILER=$(which mpicxx)
         cmake --build build
-        cd build && ctest -VV
+        ctest --test-dir build --output-on-failure
 
   build_docker_no_submodules:
     runs-on: ubuntu-latest
