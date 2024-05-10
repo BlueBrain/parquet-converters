@@ -31,7 +31,9 @@ ENV CMAKE_PREFIX_PATH=/highfive/install
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-RUN cmake -GNinja -B /build -S . -DCMAKE_CXX_COMPILER=/usr/bin/mpicxx \
+COPY . /src
+
+RUN cmake -GNinja -B /build -S /src -DCMAKE_CXX_COMPILER=/usr/bin/mpicxx \
  && cmake --build /build \
  && cmake --install /build \
  && cd /build \
