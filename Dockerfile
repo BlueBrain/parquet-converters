@@ -31,11 +31,10 @@ ENV CMAKE_PREFIX_PATH=/highfive/install
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-VOLUME /src
-COPY . /src
+VOLUME /workspace
+COPY . /workspace/src
 
-RUN cmake -GNinja -B /build -S /src -DCMAKE_CXX_COMPILER=/usr/bin/mpicxx \
- && cmake --build /build \
- && cmake --install /build \
- && cd /build \
- && ctest --output-on-failure
+RUN cmake -GNinja -B /workspace/build -S /workspace/src -DCMAKE_CXX_COMPILER=/usr/bin/mpicxx \
+ && cmake --build /workspace/build \
+ && cmake --install /workspace/build \
+ && ctest --test-dir /workspace/build --output-on-failure
