@@ -17,6 +17,7 @@ target_link_libraries(TouchParquet
                       arrow_shared
                       parquet_shared
                       range-v3)
+target_compile_options(TouchParquet PRIVATE -Werror=unused-result)
 
 add_library(CircuitParquet STATIC ${CIRCUIT_SRCS})
 target_include_directories(CircuitParquet PUBLIC
@@ -29,6 +30,7 @@ target_link_libraries(CircuitParquet
                       nlohmann_json::nlohmann_json
                       HighFive
                       range-v3)
+target_compile_options(CircuitParquet PRIVATE -Werror=unused-result)
 
 add_executable(touch2parquet touch2parquet.cpp)
 target_link_libraries(touch2parquet

@@ -49,7 +49,10 @@ void CircuitReaderParquet::init_data_reader() {
         reader_ = parquet::ParquetFileReader::OpenFile(filename_, false);
     }
     // NOTE that reader is unique. We must give it up to the other reader
-    parquet::arrow::FileReader::Make(arrow::default_memory_pool(), std::move(reader_), &data_reader_);
+    const auto status = parquet::arrow::FileReader::Make(arrow::default_memory_pool(), std::move(reader_), &data_reader_);
+    if (!status.ok()) {
+        throw std::runtime_error(status.ToString());
+    }
     cur_row_group_ = 0;
 }
 
@@ -66,7 +69,10 @@ uint32_t CircuitReaderParquet::fillBuffer(CircuitData* buf, uint32_t length) {
         return 0;
     }
 
-    data_reader_->ReadRowGroup(cur_row_group_++, &(buf->row_group));
+    const auto status = data_reader_->ReadRowGroup(cur_row_group_++, &(buf->row_group));
+    if (!status.ok()) {
+        throw std::runtime_error(status.ToString());
+    }
     return (uint32_t) buf->row_group->num_rows();
 }
 

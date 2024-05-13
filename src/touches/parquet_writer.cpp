@@ -138,7 +138,10 @@ TouchWriterParquet::~TouchWriterParquet() {
         _writeBuffer(_buffer_offset);
     }
     file_writer->Close();
-    out_file->Close();
+    const auto status = out_file->Close();
+    if (!status.ok()) {
+        std::clog << status.ToString() << std::endl;
+    }
 }
 
 
