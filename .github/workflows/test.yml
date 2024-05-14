@@ -36,10 +36,13 @@ jobs:
         ctest --test-dir build --output-on-failure
         cmake --install build
 
+    - name: Set up Python
+      uses: actions/setup-python@v5
+
     - name: Small integration test
       run: |
-        export PATH=$PATH:$PWD/install
-        sh tests/test_integration.sh
+        export PATH=$PATH:$PWD/install/bin
+        python tests/test_integration.py
 
   build_docker_no_submodules:
     runs-on: ubuntu-latest
