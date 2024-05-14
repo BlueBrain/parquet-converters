@@ -1,3 +1,4 @@
 libsonata
 pandas
 pyarrow
+pytest

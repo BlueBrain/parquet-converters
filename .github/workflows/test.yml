@@ -43,7 +43,7 @@ jobs:
       run: |
         export PATH=$PATH:$PWD/install/bin
         python -mpip install -r tests/test_requirements.txt
-        python tests/test_integration.py
+        python -mpytest tests
 
   build_docker_no_submodules:
     runs-on: ubuntu-latest

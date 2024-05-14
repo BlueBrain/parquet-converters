@@ -70,7 +70,7 @@ def test_conversion():
         parquet_name = tmpdir / "data.parquet"
         parquet_name.mkdir(parents=True, exist_ok=True)
         sonata_name = tmpdir / "data.h5"
-        population_name = "d-fault"
+        population_name = "cells__cells__test"
 
         df = generate_data(parquet_name)
 
@@ -84,7 +84,16 @@ def test_conversion():
         assert len(pop) == len(df)
 
         npt.assert_array_equal(
-            pop.get_attribute("my_attribute", pop.select_all()), df["my_attribute"]
+            pop.source_nodes(pop.select_all()),
+            df["source_node_id"]
+        )
+        npt.assert_array_equal(
+            pop.target_nodes(pop.select_all()),
+            df["target_node_id"]
+        )
+        npt.assert_array_equal(
+            pop.get_attribute("my_attribute", pop.select_all()),
+            df["my_attribute"]
         )
         npt.assert_array_equal(
             pop.get_attribute("my_other_attribute", pop.select_all()),
