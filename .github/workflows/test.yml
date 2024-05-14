@@ -39,7 +39,7 @@ jobs:
     - name: Small integration test
       run: |
         export PATH=$PATH:$PWD/install
-        python tests/test_integration.sh
+        sh tests/test_integration.sh
 
   build_docker_no_submodules:
     runs-on: ubuntu-latest
