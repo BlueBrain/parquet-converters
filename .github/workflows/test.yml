@@ -27,12 +27,19 @@ jobs:
         sudo apt-get install -y cmake g++ libhdf5-openmpi-dev librange-v3-dev ninja-build nlohmann-json3-dev
         sudo apt-get install -y libarrow-dev libparquet-dev
 
-    - name: Configure
+    - name: Configure and build
       run: |
         cmake -B build -S . -GNinja \
-          -DCMAKE_CXX_COMPILER=$(which mpicxx)
+          -DCMAKE_INSTALL_PREFIX=$PWD/install \
+          -DCMAKE_CXX_COMPILER=$(which mpicxx) \
         cmake --build build
         ctest --test-dir build --output-on-failure
+        cmake --install build
+
+    - name: Small integration test
+      run: |
+        export PATH=$PATH:$PWD/install
+        python tests/test_integration.sh
 
   build_docker_no_submodules:
     runs-on: ubuntu-latest
