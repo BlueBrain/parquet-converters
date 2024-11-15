@@ -26,7 +26,7 @@ using namespace arrow;
 using namespace std;
 
 
-static const unordered_set<string> COLUMNS_TO_SKIP{"synapse_id"};
+static const unordered_set<string> COLUMNS_TO_SKIP{"synapse_id", "__index_level_0__"};
 
 
 SonataWriter::SonataWriter(const string & filepath,
