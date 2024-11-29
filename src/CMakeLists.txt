@@ -35,7 +35,8 @@ target_compile_options(CircuitParquet PRIVATE -Werror=unused-result)
 add_executable(touch2parquet touch2parquet.cpp)
 target_link_libraries(touch2parquet
                       TouchParquet
-                      CLI11::CLI11)
+                      CLI11::CLI11
+                      MPI::MPI_CXX)
 
 add_executable(parquet2hdf5 parquet2hdf5.cpp)
 target_link_libraries(parquet2hdf5

@@ -26,6 +26,9 @@ jobs:
       run: |
         sudo apt-get install -y cmake g++ libhdf5-openmpi-dev librange-v3-dev ninja-build nlohmann-json3-dev
         sudo apt-get install -y libarrow-dev libparquet-dev
+        sudo apt-get install -y python3 python3-dev python3-pip
+        sudo apt-get install -y openmpi-bin libopenmpi-dev
+        pip3 install nanobind mpi4py h5py
 
     - name: Configure and build
       run: |
@@ -39,11 +42,15 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
 
-    - name: Small integration test
+    - name: Small integration test (excluding MPI test)
       run: |
         export PATH=$PATH:$PWD/install/bin
+        export PYTHONPATH=$PYTHONPATH:$PWD/build
         python -mpip install -r tests/test_requirements.txt
-        python -mpytest tests
+        python -mpytest tests -k "not test_indexing"
+
+    - name: Run MPI test
+      run: PYTHONPATH=$PYTHONPATH:$PWD/build PATH=$PATH:$PWD/install/bin mpirun -n 2 --oversubscribe python -mpytest tests/test_indexing.py
 
   build_docker_no_submodules:
     runs-on: ubuntu-latest

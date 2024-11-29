@@ -44,9 +44,10 @@ set_tests_properties(touches_conversion_v2 parquet_conversion_v2
 
 add_executable(test_indexing test_indexing.cpp
                              ${${PROJECT_NAME}_SOURCE_DIR}/src/index/index.cpp)
-target_link_libraries(test_indexing Catch2::Catch2WithMain HighFive MPI::MPI_C)
+target_link_libraries(test_indexing Catch2::Catch2WithMain HighFive MPI::MPI_CXX)
 target_include_directories(
   test_indexing PRIVATE $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/src>)
+target_compile_definitions(test_indexing PRIVATE OMPI_SKIP_MPICXX)
 
 include(CTest)
 include(Catch)
